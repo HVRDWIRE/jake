@@ -84,6 +84,42 @@ pdf2htmlEX.defaultViewer = new pdf2htmlEX.Viewer({});
 <title></title>
 </head>
 <body>
+ <!-- Add this code right after your opening <body> tag or at the top of your content -->
+
+<style>
+  .download-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #333333;
+    color: #bbff22;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    border: 2px solid #bbff22;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    font-family: Arial, sans-serif;
+  }
+  
+  .download-btn:hover {
+    background-color: #bbff22;
+    color: #333333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(187, 255, 34, 0.3);
+  }
+  
+  .download-btn:active {
+    transform: translateY(0);
+  }
+</style>
+
+<a href="RESUME.pdf" download="RESUME.pdf" class="download-btn">
+  📥 Download PDF
+</a>
 <div id="sidebar">
 <div id="outline">
 </div>
