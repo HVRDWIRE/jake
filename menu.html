@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video & Visual Content Menu - South East Kent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500&family=Crimson+Text:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F8F6F1;
+            --paper-warm: #F5F2EA;
+            --ink-black: #1A1A1A;
+            --charcoal: #2C2C2C;
+            --gold-accent: #B8956A;
+            --sepia: #8B7355;
+            --divider: #D4CEC3;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background-color: var(--paper-warm);
+            background-image: 
+                radial-gradient(circle at 25% 20%, rgba(184, 149, 106, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 75% 80%, rgba(139, 115, 85, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(205, 192, 176, 0.02) 0%, transparent 50%);
+            color: var(--ink-black);
+            line-height: 1.8;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Sophisticated paper texture - handmade laid paper effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                /* Laid lines - horizontal texture like fine stationery */
+                repeating-linear-gradient(
+                    0deg,
+                    transparent 0px,
+                    transparent 0.8px,
+                    rgba(139, 115, 85, 0.015) 0.8px,
+                    rgba(139, 115, 85, 0.015) 1.6px,
+                    transparent 1.6px,
+                    transparent 2.4px
+                ),
+                /* Subtle vertical chain lines */
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 28px,
+                    rgba(139, 115, 85, 0.012) 28px,
+                    rgba(139, 115, 85, 0.012) 29px,
+                    transparent 29px,
+                    transparent 56px
+                ),
+                /* Organic fiber variations */
+                radial-gradient(ellipse at 12% 18%, rgba(160, 142, 120, 0.08) 0%, transparent 1.5%),
+                radial-gradient(ellipse at 88% 22%, rgba(155, 138, 115, 0.07) 0%, transparent 1.2%),
+                radial-gradient(ellipse at 45% 65%, rgba(150, 135, 114, 0.06) 0%, transparent 1.8%),
+                radial-gradient(ellipse at 78% 85%, rgba(158, 140, 118, 0.09) 0%, transparent 1.4%),
+                radial-gradient(ellipse at 22% 72%, rgba(148, 132, 112, 0.07) 0%, transparent 1.6%),
+                radial-gradient(ellipse at 65% 35%, rgba(152, 136, 115, 0.08) 0%, transparent 1.3%),
+                radial-gradient(ellipse at 35% 48%, rgba(147, 131, 111, 0.06) 0%, transparent 1.7%),
+                radial-gradient(ellipse at 92% 58%, rgba(145, 130, 110, 0.08) 0%, transparent 1.5%);
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.75;
+        }
+
+        /* Fine grain overlay - subtle texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4.2' numOctaves='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.35'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: multiply;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+        }
+
+        .menu-card {
+            max-width: 820px;
+            width: 100%;
+            background: linear-gradient(to bottom, 
+                rgba(255, 255, 255, 0.6) 0%, 
+                rgba(255, 255, 255, 0.4) 50%, 
+                rgba(255, 255, 255, 0.6) 100%);
+            padding: 5rem 4rem;
+            position: relative;
+            z-index: 2;
+            box-shadow: 
+                0 2px 4px var(--shadow),
+                0 8px 24px rgba(139, 115, 85, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(212, 206, 195, 0.4);
+        }
+
+        /* Ornamental corners */
+        .menu-card::before,
+        .menu-card::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--gold-accent);
+            opacity: 0.3;
+        }
+
+        .menu-card::before {
+            top: 2rem;
+            left: 2rem;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .menu-card::after {
+            bottom: 2rem;
+            right: 2rem;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 4.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--divider);
+            position: relative;
+        }
+
+        header::after {
+            content: '◆';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--paper-warm);
+            padding: 0 1rem;
+            color: var(--gold-accent);
+            font-size: 0.7rem;
+        }
+
+        .site-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.25rem;
+            line-height: 1.3;
+            text-transform: uppercase;
+            color: var(--charcoal);
+        }
+
+        .site-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 400;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+            color: var(--sepia);
+        }
+
+        .site-tagline {
+            font-size: 1.05rem;
+            font-style: italic;
+            color: var(--charcoal);
+            max-width: 480px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* Section Styling */
+        section {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            color: var(--charcoal);
+        }
+
+        .section-ornament {
+            text-align: center;
+            color: var(--gold-accent);
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5em;
+        }
+
+        .section-intro {
+            font-style: italic;
+            margin-bottom: 2.5rem;
+            color: var(--sepia);
+            text-align: center;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+        }
+
+        /* Menu Items */
+        .menu-item {
+            margin-bottom: 3rem;
+            position: relative;
+            opacity: 0;
+            animation: elegantFadeIn 0.8s ease forwards;
+        }
+
+        .menu-item:nth-child(2) { animation-delay: 0.15s; }
+        .menu-item:nth-child(3) { animation-delay: 0.3s; }
+        .menu-item:nth-child(4) { animation-delay: 0.45s; }
+        .menu-item:nth-child(5) { animation-delay: 0.6s; }
+        .menu-item:nth-child(6) { animation-delay: 0.75s; }
+
+        @keyframes elegantFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .item-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-align: center;
+            color: var(--ink-black);
+        }
+
+        .price-line {
+            flex: 1;
+            height: 1px;
+            background: repeating-linear-gradient(
+                to right,
+                transparent 0px,
+                transparent 3px,
+                var(--divider) 3px,
+                var(--divider) 6px
+            );
+            margin: 0 1.5rem;
+            align-self: center;
+            min-width: 40px;
+        }
+
+        .item-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: var(--gold-accent);
+            white-space: nowrap;
+            position: absolute;
+            right: 0;
+            top: 0;
+            background: var(--paper-warm);
+            padding-left: 1rem;
+        }
+
+        .item-description {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--charcoal);
+            margin-bottom: 0.75rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .item-details {
+            list-style: none;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+
+        .item-details li {
+            font-size: 0.88rem;
+            margin-bottom: 0.35rem;
+            color: var(--sepia);
+            letter-spacing: 0.02em;
+        }
+
+        .item-details li::before {
+            content: '·';
+            margin-right: 0.5rem;
+            color: var(--gold-accent);
+        }
+
+        .item-best-for {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--sepia);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        .item-best-for strong {
+            font-weight: 500;
+            font-style: normal;
+            color: var(--charcoal);
+            letter-spacing: 0.05em;
+        }
+
+        /* Divider ornament between sections */
+        .section-divider {
+            text-align: center;
+            margin: 3rem 0;
+            color: var(--gold-accent);
+            font-size: 0.9rem;
+            letter-spacing: 0.8em;
+        }
+
+        /* How It Works Section */
+        .steps-container {
+            margin-top: 2.5rem;
+            border-top: 1px solid var(--divider);
+            border-bottom: 1px solid var(--divider);
+            padding: 2rem 0;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--gold-accent);
+            margin-bottom: 0.75rem;
+            line-height: 1;
+        }
+
+        .step-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--charcoal);
+            letter-spacing: 0.02em;
+        }
+
+        /* Info Block */
+        .info-block {
+            background: rgba(184, 149, 106, 0.04);
+            padding: 1.75rem 2.5rem;
+            margin: 2.5rem 0;
+            border-left: 2px solid var(--gold-accent);
+            border-right: 2px solid var(--gold-accent);
+            text-align: center;
+        }
+
+        .info-block p {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--charcoal);
+        }
+
+        .info-block strong {
+            font-weight: 500;
+            letter-spacing: 0.03em;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 3.5rem 0 0 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--divider);
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: '◆';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--paper-warm);
+            padding: 0 1rem;
+            color: var(--gold-accent);
+            font-size: 0.7rem;
+        }
+
+        .cta-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--charcoal);
+        }
+
+        .cta-intro {
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            color: var(--sepia);
+        }
+
+        .cta-details {
+            margin-bottom: 2.5rem;
+            font-size: 0.9rem;
+            line-height: 1.9;
+            color: var(--charcoal);
+        }
+
+        .cta-details li {
+            list-style: none;
+            margin-bottom: 0.4rem;
+        }
+
+        .cta-details li::before {
+            content: '·';
+            margin-right: 0.5rem;
+            color: var(--gold-accent);
+        }
+
+        .cta-button {
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            padding: 1.1rem 3.5rem;
+            border: 1.5px solid var(--charcoal);
+            background: transparent;
+            color: var(--charcoal);
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--charcoal);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        .cta-button:hover {
+            color: var(--cream);
+            border-color: var(--charcoal);
+        }
+
+        /* Serving Area */
+        .serving-area {
+            text-align: center;
+            font-size: 0.95rem;
+            color: var(--sepia);
+            margin: 2.5rem 0;
+            font-style: italic;
+            padding: 0 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-wrapper {
+                padding: 2rem 1rem;
+            }
+
+            .menu-card {
+                padding: 3rem 2rem;
+            }
+
+            .menu-card::before,
+            .menu-card::after {
+                width: 40px;
+                height: 40px;
+            }
+
+            .menu-card::before {
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .menu-card::after {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .site-title {
+                font-size: 2rem;
+                letter-spacing: 0.1em;
+            }
+
+            .site-subtitle {
+                font-size: 0.65rem;
+            }
+
+            .item-header {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .price-line {
+                display: none;
+            }
+
+            .item-price {
+                position: static;
+                padding-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cta-button {
+                padding: 1rem 2.5rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .menu-card {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .item-name {
+                font-size: 1.1rem;
+            }
+
+            .item-price {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="menu-card">
+            <header>
+                <h1 class="site-title">Video & Visual Content</h1>
+                <p class="site-subtitle">South East Kent Coastal Businesses</p>
+                <p class="site-tagline">Fresh, locally produced video and visual content — prepared to order</p>
+            </header>
+
+            <!-- Starters Section -->
+            <section id="starters">
+                <h2 class="section-title">Starters</h2>
+                <div class="section-ornament">· · ·</div>
+                <p class="section-intro">Simple, effective content for quick online presence</p>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-name">Social Media Starter Video</h3>
+                        <div class="price-line"></div>
+                        <span class="item-price">£111</span>
+                    </div>
+                    <p class="item-description">A short, professional promotional video designed for regular posting</p>
+                    <ul class="item-details">
+                        <li>One finished video (45–60 seconds)</li>
+                        <li>On-location filming or supplied footage</li>
+                        <li>Clean edit with music and colour adjustment</li>
+                        <li>Delivered ready for Instagram, TikTok, Facebook</li>
+                    </ul>
+                    <p class="item-best-for"><strong>Best for</strong> — cafés, barbers, trades, seasonal offers</p>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-name">Motion Graphic Starter</h3>
+                        <div class="price-line"></div>
+                        <span class="item-price">£85</span>
+                    </div>
+                    <p class="item-description">A graphics-led visual for announcements or branding</p>
+                    <ul class="item-details">
+                        <li>Animated text or logo</li>
+                        <li>No filming required</li>
+                        <li>Delivered in vertical format</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="section-divider">❖ ❖ ❖</div>
+
+            <!-- Mains Section -->
+            <section id="mains">
+                <h2 class="section-title">Mains</h2>
+                <div class="section-ornament">· · ·</div>
+                <p class="section-intro">High-value content designed to drive enquiries</p>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-name">Business Presence Content Pack</h3>
+                        <div class="price-line"></div>
+                        <span class="item-price">£333</span>
+                    </div>
+                    <p class="item-description">Consistent content for ongoing visibility</p>
+                    <ul class="item-details">
+                        <li>Three short promotional videos (30–60 seconds each)</li>
+                        <li>Single filming session</li>
+                        <li>Caption-ready edits</li>
+                        <li>Vertical and square formats included</li>
+                    </ul>
+                    <p class="item-best-for"><strong>Best for</strong> — businesses posting weekly</p>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-name">Local Brand Growth Package</h3>
+                        <div class="price-line"></div>
+                        <span class="item-price">£720</span>
+                    </div>
+                    <p class="item-description">A stronger, more polished visual presence</p>
+                    <ul class="item-details">
+                        <li>Five promotional videos</li>
+                        <li>On-location filming</li>
+                        <li>Enhanced edits and pacing</li>
+                        <li>Subtle animated titles</li>
+                    </ul>
+                    <p class="item-best-for"><strong>Best for</strong> — estate agents, gyms, retail, hospitality</p>
+                </div>
+            </section>
+
+            <div class="section-divider">❖ ❖ ❖</div>
+
+            <!-- Specials Section -->
+            <section id="specials">
+                <h2 class="section-title">Specials</h2>
+                <div class="section-ornament">· · ·</div>
+                <p class="section-intro">Distinctive visual styles and premium options</p>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-name">Retro / Vintage Camcorder Feature</h3>
+                        <div class="price-line"></div>
+                        <span class="item-price">From £360</span>
+                    </div>
+                    <p class="item-description">Stylised camcorder or vintage-look production</p>
+                    <ul class="item-details">
+                        <li>Specialist capture style</li>
+                        <li>Authentic retro colour treatment</li>
+                        <li>Finished video up to 90 seconds</li>
+                    </ul>
+                    <p class="item-best-for"><strong>Popular with</strong> — barbers, fashion, creative brands</p>
+                </div>
+
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-name">Cinematic Business Feature</h3>
+                        <div class="price-line"></div>
+                        <span class="item-price">£440</span>
+                    </div>
+                    <p class="item-description">A professional brand or service overview video</p>
+                    <ul class="item-details">
+                        <li>Pre-shoot planning</li>
+                        <li>On-site filming</li>
+                        <li>One finished video (1–2 minutes)</li>
+                        <li>Colour and audio finishing</li>
+                    </ul>
+                    <p class="item-best-for"><strong>Ideal for</strong> — websites and pinned posts</p>
+                </div>
+            </section>
+
+            <div class="section-divider">❖ ❖ ❖</div>
+
+            <!-- Wine Section -->
+            <section id="wine">
+                <h2 class="section-title">Wine</h2>
+                <div class="section-ornament">· · ·</div>
+                <p class="section-intro">Enhance your main selection with a distinctive visual pairing</p>
+                
+                <div class="menu-item">
+                    <div class="item-header">
+                        <h3 class="item-name">3D or Stylised Visual Sequence</h3>
+                        <div class="price-line"></div>
+                        <span class="item-price">£260 – £420</span>
+                    </div>
+                    <p class="item-description">Custom visual segment designed to elevate promotional content</p>
+                </div>
+            </section>
+
+            <div class="section-divider">❖ ❖ ❖</div>
+
+            <!-- Sides & Extras Section -->
+            <section id="extras">
+                <h2 class="section-title">Sides & Extras</h2>
+                <div class="section-ornament">· · ·</div>
+                <p class="section-intro">Add to any main dish</p>
+                
+                <ul class="item-details" style="margin-top: 1.5rem;">
+                    <li>Additional video from same shoot — £90</li>
+                    <li>Extra format (portrait / landscape / square) — £20</li>
+                    <li>Subtitles / captions — £25 per video</li>
+                    <li>Animated titles or overlays — £75 per asset</li>
+                </ul>
+            </section>
+
+            <div class="section-divider">❖ ❖ ❖</div>
+
+            <!-- How It Works Section -->
+            <section id="how-it-works">
+                <h2 class="section-title">How It Works</h2>
+                <div class="section-ornament">· · ·</div>
+                <p class="section-intro">Simple. Predictable. No hourly billing.</p>
+                
+                <div class="steps-container">
+                    <div class="steps-grid">
+                        <div class="step">
+                            <div class="step-number">I</div>
+                            <p class="step-text">Choose from<br>the menu</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">II</div>
+                            <p class="step-text">Quick discussion to<br>confirm outcome</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">III</div>
+                            <p class="step-text">Filming or<br>asset creation</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">IV</div>
+                            <p class="step-text">Edit, review,<br>and delivery</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-block">
+                    <p><strong>All pricing is outcome-based and agreed in advance</strong></p>
+                </div>
+            </section>
+
+            <!-- Serving Section -->
+            <section id="serving">
+                <h2 class="section-title">Serving</h2>
+                <div class="section-ornament">· · ·</div>
+                <p class="serving-area">South East Kent coastal areas including local high streets,<br>seafront businesses, and independent traders</p>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta-section" id="book">
+                <h2 class="cta-title">Book a Slot</h2>
+                <p class="cta-intro">To check availability, send:</p>
+                <ul class="cta-details">
+                    <li>Business type</li>
+                    <li>Location</li>
+                    <li>Menu item(s) selected</li>
+                    <li>Preferred delivery date</li>
+                </ul>
+                <a href="mailto:jake@jæk.com?subject=BOOK%20A%20SLOT" class="cta-button">Request Availability</a>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
