@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>What's On in Whitstable — August & September 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 60px 40px;
+    background: #FBEEDD;
+    font-family: 'Poppins', sans-serif;
+    color: #2B2420;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto 80px auto;
+  }
+
+  h1 {
+    font-size: 52px;
+    font-weight: 800;
+    color: #E4522A;
+    line-height: 1.05;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #E4522A;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .source-note {
+    font-size: 12px;
+    color: #8a7d6f;
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+
+  .event-row {
+    display: flex;
+    align-items: stretch;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.06);
+    margin-bottom: 6px;
+  }
+
+  .row-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 14px 8px;
+    width: 44px;
+    flex: 0 0 44px;
+    color: #2B2420;
+  }
+
+  .event-cells {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+  }
+
+  .festivals-label { background: #C9B8E8; border-bottom: 6px solid #9B7FD1; }
+  .music-label     { background: #C6D3B6; border-bottom: 6px solid #8FA36F; }
+  .culture-label   { background: #F3C79A; border-bottom: 6px solid #E4952F; }
+  .quiz-label      { background: #A9C9E8; border-bottom: 6px solid #5B8FC7; }
+
+  .festivals-row .event-cell { background: #EFE7F7; border-bottom: 6px solid #9B7FD1; }
+  .music-row .event-cell     { background: #EAEFE1; border-bottom: 6px solid #8FA36F; }
+  .culture-row .event-cell   { background: #FBEBD6; border-bottom: 6px solid #E4952F; }
+  .quiz-row .event-cell      { background: #E2EDF7; border-bottom: 6px solid #5B8FC7; }
+
+  .event-cell {
+    padding: 16px 18px;
+    vertical-align: top;
+    flex: 1 1 240px;
+    max-width: 25%;
+    border-right: 2px solid #FBEEDD;
+  }
+
+  .event-date {
+    color: #E4522A;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  .event-time {
+    color: #E4522A;
+    font-style: italic;
+    font-size: 12.5px;
+    margin-bottom: 6px;
+  }
+
+  .event-name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+    line-height: 1.25;
+  }
+
+  .event-venue {
+    font-size: 12.5px;
+    color: #55493d;
+  }
+
+  .month-note {
+    margin-top: 18px;
+    font-size: 12.5px;
+    color: #8a7d6f;
+    line-height: 1.5;
+  }
+
+  .month-note a { color: #E4522A; }
+
+  .toolbar {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+
+  .toolbar button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: #FBEEDD;
+    background: #E4522A;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
+    transition: transform 0.1s ease;
+  }
+
+  .toolbar button:hover { transform: translateY(-1px); }
+  .toolbar button:active { transform: translateY(0); }
+
+  .toolbar button.secondary {
+    background: #2B2420;
+  }
+
+  @media print {
+    .toolbar { display: none !important; }
+
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    html, body {
+      background: #FBEEDD !important;
+      padding: 20px 30px;
+    }
+
+    .page {
+      margin: 0 0 20px 0;
+      max-width: 100%;
+      break-after: page;
+      page-break-after: always;
+    }
+
+    .page:last-of-type {
+      break-after: auto;
+      page-break-after: auto;
+    }
+
+    .event-row,
+    .event-cell,
+    h1,
+    .month-note {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <button type="button" onclick="window.print()">🖨️ Print</button>
+    <button type="button" class="secondary" onclick="window.print()" title="In the print dialog, make sure 'Background graphics' is switched on to keep the page colour">⬇️ Download PDF</button>
+  </div>
+  <!-- AUGUST -->
+  <div class="page">
+    <h1>What's On<br>in August</h1>
+    <div class="subtitle">Local events in Whitstable</div>
+    <div class="source-note">Only independently confirmed events are shown — sourced from whitstable.co.uk and whitstablemaritime.org.uk</div>
+
+    <div class="event-row festivals-row">
+      <div class="row-label festivals-label">Festivals</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-date">1 AUG</div>
+          <div class="event-time">Procession from 5:30pm</div>
+          <div class="event-name">Whitstable Carnival</div>
+          <div class="event-venue">Tankerton Road → East Kent, Saddleton Road</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-date">15 AUG</div>
+          <div class="event-time">From 8:00am</div>
+          <div class="event-name">Whitstable Harbour Day</div>
+          <div class="event-venue">Whitstable Harbour</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-date">29 AUG →</div>
+          <div class="event-time">Continues into September</div>
+          <div class="event-name">Whitstable Arts Festival opens</div>
+          <div class="event-venue">Horsebridge Arts Centre</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="month-note">Checked against <a href="https://www.whitstable.co.uk/event/whitstable-carnival-2026/">whitstable.co.uk</a> and <a href="https://whitstablemaritime.org.uk/whitstable-harbour-day-15-august-2026/">whitstablemaritime.org.uk</a>.</div>
+  </div>
+
+  <!-- SEPTEMBER -->
+  <div class="page">
+    <h1>What's On<br>in September</h1>
+    <div class="subtitle">Local events in Whitstable</div>
+    <div class="source-note">Only independently confirmed events are shown — sourced from whitstable.co.uk, whitstablerocksoysterfestival.com and zoomevents.co.uk</div>
+
+    <div class="event-row festivals-row">
+      <div class="row-label festivals-label">Festivals</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-date">→ 8 SEPT</div>
+          <div class="event-time">Started 29 Aug</div>
+          <div class="event-name">Whitstable Arts Festival</div>
+          <div class="event-venue">Horsebridge Arts Centre</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-date">11–13 SEPT</div>
+          <div class="event-time">Fri opens 5pm</div>
+          <div class="event-name">Whitstable Rocks Oyster Festival</div>
+          <div class="event-venue">Whitstable Harbour / East Quay</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-date">12 SEPT</div>
+          <div class="event-time">1:00pm</div>
+          <div class="event-name">Landing of the Oysters</div>
+          <div class="event-venue">Long Beach</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-date">11 SEPT</div>
+          <div class="event-time">9:15pm</div>
+          <div class="event-name">Oyster Festival Fireworks</div>
+          <div class="event-venue">Long Beach</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-date">22–24 SEPT</div>
+          <div class="event-time">Chef demos, tastings</div>
+          <div class="event-name">Canterbury Food &amp; Drink Festival</div>
+          <div class="event-venue">Canterbury — a short cycle from Whitstable</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-row music-row">
+      <div class="row-label music-label">Live Music</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-date">12 SEPT</div>
+          <div class="event-time">£25 + booking fee, 18+</div>
+          <div class="event-name">Marshall Jefferson DJ Set</div>
+          <div class="event-venue">East Quay Venue (Oyster Festival)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-row culture-row">
+      <div class="row-label culture-label">Workshops &amp; Family</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-date">12–13 SEPT</div>
+          <div class="event-time">Sat &amp; Sun, 11am–4:30pm</div>
+          <div class="event-name">Long Beach Family Activities</div>
+          <div class="event-venue">Welly throwing, pirate pottery, kite flying, chalk art (Oyster Festival)</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-date">13 SEPT</div>
+          <div class="event-time">4:00pm</div>
+          <div class="event-name">Oyster-Shucking Contest</div>
+          <div class="event-venue">Whitstable Harbour</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="month-note">Checked against <a href="https://www.whitstable.co.uk/event/whitstable-oyster-festival-2026/">whitstable.co.uk</a>, <a href="https://whitstablerocksoysterfestival.com/info/">whitstablerocksoysterfestival.com</a> and <a href="https://www.zoomevents.co.uk/events/canterburys-cooking-2026">zoomevents.co.uk</a>.</div>
+  </div>
+
+  <!-- EVERY WEEK -->
+  <div class="page">
+    <h1>Every Week<br>in Whitstable</h1>
+    <div class="subtitle">Recurring events, year-round</div>
+    <div class="source-note">Regular markets, live music, wellbeing and family events that run weekly or monthly — sourced from discoverwhitstable.co.uk</div>
+
+    <div class="event-row festivals-row">
+      <div class="row-label festivals-label">Markets &amp; Makers</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-time">A Whitstable institution</div>
+          <div class="event-name">Whitstable Harbour Market</div>
+          <div class="event-venue">Local crafts, vintage finds, street food and fresh produce — Whitstable Harbour</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Local, organic, handmade goods</div>
+          <div class="event-name">Whitstable Farmers Market</div>
+          <div class="event-venue">The Old Coal Yard, Belmont Road, CT5 1QP</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Sat & Sun, 10am–3pm</div>
+          <div class="event-name">Craft Love Market</div>
+          <div class="event-venue">Thirst Love Café, 180 Cromwell Road, CT5 1NA</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Every 2nd &amp; last Saturday of the month</div>
+          <div class="event-name">Whitstable Foodies Market</div>
+          <div class="event-venue">Umbrella Centre</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Last Sunday of the month</div>
+          <div class="event-name">Hearts of Whitstable Makers Market</div>
+          <div class="event-venue">Umbrella Centre</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Monthly, 10am–4pm</div>
+          <div class="event-name">Antiques, Vintage &amp; Collectibles Fair</div>
+          <div class="event-venue">Umbrella Centre</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-row music-row">
+      <div class="row-label music-label">Live Music &amp; Gigs</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-time">Every Friday</div>
+          <div class="event-name">The Coach and Horses Live Music Night</div>
+          <div class="event-venue">The Coach and Horses, 37 Oxford Street</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Every Saturday, to 10pm</div>
+          <div class="event-name">DJ Saturday at the Coach &amp; Horses</div>
+          <div class="event-venue">The Coach and Horses, 37 Oxford Street</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Every Saturday, 4–6pm</div>
+          <div class="event-name">Piano &amp; Plates</div>
+          <div class="event-venue">Fable &amp; Green — live piano with small plates, no booking needed</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Acoustic sets &amp; local bands</div>
+          <div class="event-name">Live Music at Pearson's Arms</div>
+          <div class="event-venue">Pearson's Arms, Whitstable Harbour</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Regular bands &amp; solo performers</div>
+          <div class="event-name">Live Music at The Rock Lodge</div>
+          <div class="event-venue">The Rock Lodge, Oxford Street</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Last Friday of the month, from 7pm</div>
+          <div class="event-name">Seven by Seven @ 7pm — Vinyl Open Decks</div>
+          <div class="event-venue">Revival Café, 58 High Street</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-row culture-row">
+      <div class="row-label culture-label">Wellbeing &amp; Classes</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-time">Sat 9:30–10:30am (also Mon/Tue/Thu at other venues)</div>
+          <div class="event-name">Beach Yoga – Whitstable</div>
+          <div class="event-venue">West Beach</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">All ages &amp; abilities, chair option available</div>
+          <div class="event-name">Gentle Yoga by Donation</div>
+          <div class="event-venue">Whitstable Yoga &amp; Wellbeing Centre</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Social &amp; wellbeing-focused</div>
+          <div class="event-name">Coastal Wellbeing Walks</div>
+          <div class="event-venue">Whitstable seafront &amp; coastal paths</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">SSSI nature reserve &amp; shingle beach</div>
+          <div class="event-name">Long Rock Guided Nature Walk</div>
+          <div class="event-venue">Meet at Skate Park, Marine Crescent, CT6 8EJ</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Exhibitions, yoga, pilates, talks</div>
+          <div class="event-name">Horsebridge Arts Centre – Exhibitions &amp; Classes</div>
+          <div class="event-venue">Horsebridge Arts Centre</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Last Thursday of the month, 7–8:30pm</div>
+          <div class="event-name">Whitstable Wine Club — Female Winemaker Showcase</div>
+          <div class="event-venue">The Horsebridge Centre, in association with The Offy</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-row quiz-row">
+      <div class="row-label quiz-label">Quiz, Games &amp; Family</div>
+      <div class="event-cells">
+        <div class="event-cell">
+          <div class="event-time">Every Tuesday</div>
+          <div class="event-name">The Coach and Horses Quiz</div>
+          <div class="event-venue">The Coach and Horses, 37 Oxford Street</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">7–9:30pm, £2.50 per person</div>
+          <div class="event-name">Quiz Night at South Quay Shed</div>
+          <div class="event-venue">South Quay Shed</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">1st &amp; 3rd Wednesday, 7–10pm</div>
+          <div class="event-name">Board Games Night</div>
+          <div class="event-venue">The Hive, Umbrella Centre — 14+, under 18s with an adult</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Wed afternoons, school summer holidays, 2–3:30pm</div>
+          <div class="event-name">Family Summer Art Club</div>
+          <div class="event-venue">The Horsebridge</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Monthly</div>
+          <div class="event-name">Whitstable Comic Book Club</div>
+          <div class="event-venue">The Horsebridge Arts Centre</div>
+        </div>
+        <div class="event-cell">
+          <div class="event-time">Monthly</div>
+          <div class="event-name">Revival Sounds Social</div>
+          <div class="event-venue">Revival Café, 58 High Street</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="month-note">Sourced from <a href="https://discoverwhitstable.co.uk/events">discoverwhitstable.co.uk</a> — recurring listings, check the venue directly for the latest times.</div>
+  </div>
+
+
+</body>
+</html>
