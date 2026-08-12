@@ -1,0 +1,6 @@
+
+CACHE-CONTROL: NO-CACHE
+MAX-AGE: 0
+VARY: Accept-Encoding, Accept-Language
+
+# This file forces GitHub Pages cache busting for admin panel
