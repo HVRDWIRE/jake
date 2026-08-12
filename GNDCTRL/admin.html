@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GND CTRL // Hermes Agent OS</title>
+    <style>
+        :root { --neon-green: #00ff9d; --neon-blue: #00d4ff; --cassette-black: #1a1a2e; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Courier New', monospace; background: var(--cassette-black); color: white; padding: 20px; min-height: 100vh; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #16213e; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--neon-green); }
+        .status { font-family: 'Courier New', monospace; color: var(--neon-green); text-transform: uppercase; letter-spacing: 2px; font-size: 12px; }
+        .led { width: 10px; height: 10px; background: var(--neon-green); border-radius: 50%; animation: pulse 2s infinite; display: inline-block; margin-right: 10px; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .deck { text-align: center; padding: 20px; background: #0f3460; border-radius: 8px; margin-bottom: 20px; border: 2px solid #7d7d7d; }
+        .deck-label { font-family: 'Courier New', monospace; color: var(--neon-green); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; }
+        .terminal { background: #0a0a15; padding: 15px; border-radius: 4px; min-height: 120px; font-family: 'Courier New', monospace; color: var(--neon-green); margin-bottom: 20px; }
+        .blink { animation: blink 1s steps(2, start) infinite; }
+        @keyframes blink { to { visibility: hidden; } }
+        .command-form { display: flex; gap: 10px; margin-bottom: 20px; }
+        .command-input { flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 2px solid var(--neon-blue); color: white; font-family: 'Courier New', monospace; border-radius: 6px; }
+        .execute-btn { padding: 12px 25px; background: var(--neon-green); border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 6px; }
+        .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin-bottom: 20px; }
+        .module { padding: 15px; background: #16213e; border: 1px solid var(--neon-green); border-radius: 8px; text-align: center; }
+        .module-title { display: block; font-size: 9px; color: #b0b0b0; text-transform: uppercase; letter-spacing: 2px; }
+        .module-value { display: block; font-family: 'Courier New', monospace; color: var(--neon-green); font-size: 18px; font-weight: bold; }
+        .actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .action-btn { padding: 15px; background: #0f3460; border: 1px solid var(--neon-green); color: white; cursor: pointer; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        .action-btn:hover { background: var(--neon-green); color: black; }
+        #history { max-height: 150px; overflow-y: auto; font-size: 11px; color: #888; border-top: 1px solid #333; padding-top: 10px; }
+        #history div { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div><span class="led"></span>GND CTRL // HERMES AGENT OS</div>
+        <div class="status">● LIVE - MISSION READY</div>
+    </div>
+
+    <div class="deck">
+        <div class="deck-label">COMMAND DECK v1.0</div>
+        <div class="terminal" id="terminal">
+            > SYSTEM: ONLINE<br>
+            > CONNECTION: ENCRYPTED<br>
+            > USER: MAJOR TOM<br>
+            > STATUS: READY<br><br><span class="blink">_</span>
+        </div>
+    </div>
+
+    <div class="command-form">
+        <input type="text" class="command-input" id="cmd" placeholder="ENTER COMMAND..." autofocus autocomplete="off">
+        <button class="execute-btn" onclick="execute()">EXECUTE ▶</button>
+    </div>
+
+    <div class="modules">
+        <div class="module"><span class="module-title">TASKS</span><span class="module-value" id="tasks">0</span></div>
+        <div class="module"><span class="module-title">MEMORY</span><span class="module-value">55%</span></div>
+        <div class="module"><span class="module-title">SYSTEM</span><span class="module-value" id="sys">STABLE</span></div>
+    </div>
+
+    <div class="actions">
+        <button class="action-btn" onclick="run('help')">HELP</button>
+        <button class="action-btn" onclick="run('tasks')">TASKS</button>
+        <button class="action-btn" onclick="run('memory')">MEMORY</button>
+        <button class="action-btn" onclick="run('cron')">CRON JOBS</button>
+    </div>
+
+    <div id="history"></div>
+</div>
+
+<script>
+const terminal = document.getElementById('terminal');
+const history = document.getElementById('history');
+const cmdInput = document.getElementById('cmd');
+
+function execute() {
+    const cmd = cmdInput.value.trim();
+    if (!cmd) return;
+    
+    addToHistory(cmd);
+    processCommand(cmd.toLowerCase());
+    cmdInput.value = '';
+}
+
+function run(command) {
+    cmdInput.value = command.toUpperCase();
+    execute();
+}
+
+function processCommand(cmd) {
+    const responses = {
+        'help': '> AVAILABLE COMMANDS:<br>&nbsp;&nbsp;/help - Show this help<br>&nbsp;&nbsp;/tasks - View task queue<br>&nbsp;&nbsp;/memory - Check memory usage<br>&nbsp;&nbsp;/cron - Review scheduled jobs<br>&nbsp;&nbsp;/system - System diagnostics<br><span class="blink">_</span>',
+        'tasks': '> TASK QUEUE:<br>&nbsp;&nbsp;No active tasks queued.<br><span class="blink">_</span>',
+        'memory': '> MEMORY STATUS:<br>&nbsp;&nbsp;Usage: 55%<br>&nbsp;&nbsp;Capacity: 1,375 chars<br>&nbsp;&nbsp;Used: 760 chars<br><span class="blink">_</span>',
+        'cron': '> SCHEDULED JOBS:<br>&nbsp;&nbsp;No jobs configured.<br><span class="blink">_</span>',
+        'system': '> SYSTEM DIAGNOSTICS:<br>&nbsp;&nbsp;Platform: ' + navigator.platform.replace(/,/g, '.') + '<br>&nbsp;&nbsp;JavaScript: ✅<br>&nbsp;&nbsp;CSS: ✅<br>&nbsp;&nbsp;Connection: Encrypted<br><span class="blink">_</span>',
+        'whoami': '> USER: MAJOR TOM<br>&nbsp;&nbsp;Call: Jake<br>&nbsp;&nbsp;Role: Theatre Tech & Tinkerer<br>&nbsp;&nbsp;Web: jæk.com<br><span class="blink">_</span>',
+        'about': '> HERMES AGENT OS v1.0<br>&nbsp;&nbsp;Cassette-style command interface<br>&nbsp;&nbsp;Optimized for mobile/field ops<br>&nbsp;&nbsp;Designed by Ground Control<br><span class="blink">_</span>'
+    };
+    
+    terminal.innerHTML = responses[cmd] || '> UNKNOWN COMMAND: ' + cmd + '<br><span class="blink">_</span>';
+}
+
+function addToHistory(cmd) {
+    const entry = document.createElement('div');
+    entry.innerHTML = '[<time>' + new Date().toLocaleTimeString() + '</time>] > ' + cmd;
+    history.insertBefore(entry, history.firstChild);
+    if (history.children.length > 20) history.removeChild(history.lastChild);
+}
+
+cmdInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') execute();
+});
+
+document.addEventListener('DOMContentLoaded', () => { cmdInput.focus(); });
+</script>
+</body>
+</html>
