@@ -3,118 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GND CTRL // Hermes Agent OS</title>
+    <title>GND CTRL // Hermes Agent OS — Secure Access</title>
     <style>
         :root { --neon-green: #00ff9d; --neon-blue: #00d4ff; --cassette-black: #1a1a2e; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Courier New', monospace; background: var(--cassette-black); color: white; padding: 20px; min-height: 100vh; }
-        .container { max-width: 900px; margin: 0 auto; }
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #16213e; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--neon-green); }
-        .status { font-family: 'Courier New', monospace; color: var(--neon-green); text-transform: uppercase; letter-spacing: 2px; font-size: 12px; }
-        .led { width: 10px; height: 10px; background: var(--neon-green); border-radius: 50%; animation: pulse 2s infinite; display: inline-block; margin-right: 10px; }
+        body { font-family: 'Courier New', monospace; background: var(--cassette-black); color: white; height: 100vh; overflow: hidden; }
+        
+        /* Auth Gate Styles */
+        #auth-gate {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            display: flex; justify-content: center; align-items: center;
+            background: rgba(26, 26, 46, 0.98); z-index: 1000;
+        }
+        .auth-box {
+            text-align: center; padding: 40px; background: #16213e;
+            border-radius: 12px; border: 2px solid var(--neon-green);
+            max-width: 400px; width: 90%;
+        }
+        .auth-title { color: var(--neon-green); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; font-size: 14px;}
+        .auth-inputs { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .auth-input {
+            padding: 14px; background: #0a0a15; border: 2px solid #333; color: white; font-family: 'Courier New', monospace; outline: none; transition: all 0.3s;
+        }
+        .auth-input:focus { border-color: var(--neon-green); }
+        .auth-btn { padding: 14px; background: var(--neon-green); border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 6px; text-transform: uppercase; letter-spacing: 2px; transition: all 0.3s; }
+        .auth-btn:hover { background: white; color: black; transform: scale(1.02); }
+        .auth-error { color: #ff4d4d; font-size: 12px; margin-top: 15px; min-height: 16px; animation: fadein 0.3s ease-out; }
+        @keyframes fadein { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Success message */
+        .auth-success { color: var(--neon-green); margin-top: 15px; font-size: 12px; display: none; animation: fadein 0.3s ease-out; }
+        @keyframes fadein { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Admin Panel Styles (hidden until auth) */
+        #admin-panel { display: none; height: 100vh; flex-direction: column; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #16213e; border-radius: 8px 8px 0 0; margin-bottom: 15px; border: 1px solid var(--neon-green); border-bottom: none; }
+        .led { width: 8px; height: 8px; background: var(--neon-green); border-radius: 50%; animation: pulse 2s infinite; display: inline-block; margin-right: 10px; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .deck { text-align: center; padding: 20px; background: #0f3460; border-radius: 8px; margin-bottom: 20px; border: 2px solid #7d7d7d; }
-        .deck-label { font-family: 'Courier New', monospace; color: var(--neon-green); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 15px; }
-        .terminal { background: #0a0a15; padding: 15px; border-radius: 4px; min-height: 120px; font-family: 'Courier New', monospace; color: var(--neon-green); margin-bottom: 20px; }
-        .blink { animation: blink 1s steps(2, start) infinite; }
-        @keyframes blink { to { visibility: hidden; } }
-        .command-form { display: flex; gap: 10px; margin-bottom: 20px; }
-        .command-input { flex: 1; padding: 12px; background: rgba(0,0,0,0.3); border: 2px solid var(--neon-blue); color: white; font-family: 'Courier New', monospace; border-radius: 6px; }
-        .execute-btn { padding: 12px 25px; background: var(--neon-green); border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 6px; }
-        .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin-bottom: 20px; }
-        .module { padding: 15px; background: #16213e; border: 1px solid var(--neon-green); border-radius: 8px; text-align: center; }
-        .module-title { display: block; font-size: 9px; color: #b0b0b0; text-transform: uppercase; letter-spacing: 2px; }
-        .module-value { display: block; font-family: 'Courier New', monospace; color: var(--neon-green); font-size: 18px; font-weight: bold; }
-        .actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .action-btn { padding: 15px; background: #0f3460; border: 1px solid var(--neon-green); color: white; cursor: pointer; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
-        .action-btn:hover { background: var(--neon-green); color: black; }
-        #history { max-height: 150px; overflow-y: auto; font-size: 11px; color: #888; border-top: 1px solid #333; padding-top: 10px; }
-        #history div { margin-bottom: 8px; }
+        .status { font-family: 'Courier New', monospace; color: var(--neon-green); text-transform: uppercase; letter-spacing: 2px; font-size: 10px; }
+        .terminal { flex: 1; background: #0a0a15; padding: 20px; border-radius: 8px; overflow-y: auto; font-size: 13px; margin-bottom: 15px; border: 1px solid #2d2d4a; }
+        .line { margin-bottom: 8px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }
+        .timestamp { color: #888; font-size: 10px; margin-right: 5px; }
+        .system { color: var(--neon-green); }
+        .error { color: #ff4d4d; }
+        .command { color: var(--neon-blue); }
+        .response { color: white; }
+        .input-area { background: #16213e; border-radius: 8px; padding: 15px; border: 1px solid var(--neon-green); display: flex; gap: 10px; }
+        .cmd-input { flex: 1; padding: 14px; background: #0a0a15; border: 2px solid #333; color: white; font-family: 'Courier New', monospace; font-size: 14px; outline: none; border-radius: 6px; }
+        .cmd-input:focus { border-color: var(--neon-green); }
+        .send-btn { padding: 14px 30px; background: var(--neon-green); border: none; color: black; font-weight: bold; cursor: pointer; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; }
+        .send-btn:hover { background: white; color: black; transform: scale(0.98); }
     </style>
 </head>
 <body>
-<div class="container">
+
+<!-- Password Gate -->
+<div id="auth-gate">
+    <div class="auth-box">
+        <div class="auth-title">GND CTRL // Secure Access</div>
+        <p style="color: #aaa; font-size: 12px; margin-bottom: 15px;">Authorized Personnel Only<br>Identity Required For Authentication</p>
+        
+        <form id="auth-form" onsubmit="handleAuth(event)">
+            <input type="text" id="username" class="auth-input" placeholder="USERNAME" autocomplete="off">
+            <input type="password" id="password" class="auth-input" placeholder="PASSWORD" autocomplete="off">
+            <button type="submit" class="auth-btn">AUTHENTICATE ▶</button>
+        </form>
+        
+        <div id="auth-error" class="auth-error"></div>
+        <div id="auth-success" class="auth-success">Authentication Successful<br>Loading...</div>
+    </div>
+</div>
+
+<!-- Admin Panel (hidden until auth) -->
+<div id="admin-panel">
     <div class="header">
         <div><span class="led"></span>GND CTRL // HERMES AGENT OS</div>
         <div class="status">● LIVE - MISSION READY</div>
     </div>
 
-    <div class="deck">
-        <div class="deck-label">COMMAND DECK v1.0</div>
-        <div class="terminal" id="terminal">
-            > SYSTEM: ONLINE<br>
-            > CONNECTION: ENCRYPTED<br>
-            > USER: MAJOR TOM<br>
-            > STATUS: READY<br><br><span class="blink">_</span>
-        </div>
+    <div class="terminal" id="terminal">
+<div class="line"><span class="timestamp">[SYSTEM]</span><span class="system">Welcome, Major Tom. Authentication verified.</span></div>
+<div class="line"><span class="timestamp">[SYSTEM]</span><span class="system">Ground Control online. Ready for orders.</span></div>
+<div class="line"><span class="timestamp">[INFO]</span><span class="command">&gt;</span><span class="response">Type /help to see available commands...</span></div>
     </div>
 
-    <div class="command-form">
-        <input type="text" class="command-input" id="cmd" placeholder="ENTER COMMAND..." autofocus autocomplete="off">
-        <button class="execute-btn" onclick="execute()">EXECUTE ▶</button>
+    <div class="input-area">
+        <input type="text" class="cmd-input" id="cmd" placeholder="/help, /tasks, /memory, /cron, /system..." autocomplete="off" autofocus spellcheck="false">
+        <button class="send-btn" id="sendBtn">SEND ▶</button>
     </div>
 
-    <div class="modules">
-        <div class="module"><span class="module-title">TASKS</span><span class="module-value" id="tasks">0</span></div>
-        <div class="module"><span class="module-title">MEMORY</span><span class="module-value">55%</span></div>
-        <div class="module"><span class="module-title">SYSTEM</span><span class="module-value" id="sys">STABLE</span></div>
+    <div style="display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;">
+<button class="quick-btn" onclick="quickCmd('help')">Help</button>
+<button class="quick-btn" onclick="quickCmd('tasks')">Tasks</button>
+<button class="quick-btn" onclick="quickCmd('memory')">Memory</button>
+<button class="quick-btn" onclick="quickCmd('cron')">Cron Jobs</button>
+<button class="quick-btn" onclick="quickCmd('system')">System</button>
     </div>
-
-    <div class="actions">
-        <button class="action-btn" onclick="run('help')">HELP</button>
-        <button class="action-btn" onclick="run('tasks')">TASKS</button>
-        <button class="action-btn" onclick="run('memory')">MEMORY</button>
-        <button class="action-btn" onclick="run('cron')">CRON JOBS</button>
-    </div>
-
-    <div id="history"></div>
 </div>
 
 <script>
-const terminal = document.getElementById('terminal');
-const history = document.getElementById('history');
-const cmdInput = document.getElementById('cmd');
+// Hardcoded credentials (client-side auth - suitable for this use case)
+const VALID_USER = "Major_Tom";
+const VALID_PASS = "BlueBear#0010110";
 
-function execute() {
-    const cmd = cmdInput.value.trim();
-    if (!cmd) return;
+function handleAuth(e) {
+    e.preventDefault();
+    const user = document.getElementById('username').value.trim();
+    const pass = document.getElementById('password').value;
+    const errorDiv = document.getElementById('auth-error');
+    const successDiv = document.getElementById('auth-success');
     
-    addToHistory(cmd);
-    processCommand(cmd.toLowerCase());
-    cmdInput.value = '';
+    if (user === VALID_USER && pass === VALID_PASS) {
+        // Success
+        document.getElementById('auth-gate').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'flex';
+        
+        // Welcome message
+        addToTerminal(`<span class="timestamp">[${new Date().toLocaleTimeString()}]</span><span class="system">Welcome aboard, Major Tom. All systems operational.</span>`);
+    } else {
+        // Invalid credentials
+        errorDiv.textContent = `ACCESS DENIED: Invalid username or password.`;
+        successDiv.style.display = 'none';
+    }
 }
 
-function run(command) {
-    cmdInput.value = command.toUpperCase();
-    execute();
-}
+// Command handler - responds via chat interface
+function handleCommand(text) {
+    const [cmd, ...args] = text.trim().toLowerCase().split(/\s+/);
+    const responseDiv = document.createElement('div');
+    responseDiv.className = 'line';
+    
+    // Generate timestamp
+    const now = new Date();
+    const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
-function processCommand(cmd) {
+    // Command responses
     const responses = {
-        'help': '> AVAILABLE COMMANDS:<br>&nbsp;&nbsp;/help - Show this help<br>&nbsp;&nbsp;/tasks - View task queue<br>&nbsp;&nbsp;/memory - Check memory usage<br>&nbsp;&nbsp;/cron - Review scheduled jobs<br>&nbsp;&nbsp;/system - System diagnostics<br><span class="blink">_</span>',
-        'tasks': '> TASK QUEUE:<br>&nbsp;&nbsp;No active tasks queued.<br><span class="blink">_</span>',
-        'memory': '> MEMORY STATUS:<br>&nbsp;&nbsp;Usage: 55%<br>&nbsp;&nbsp;Capacity: 1,375 chars<br>&nbsp;&nbsp;Used: 760 chars<br><span class="blink">_</span>',
-        'cron': '> SCHEDULED JOBS:<br>&nbsp;&nbsp;No jobs configured.<br><span class="blink">_</span>',
-        'system': '> SYSTEM DIAGNOSTICS:<br>&nbsp;&nbsp;Platform: ' + navigator.platform.replace(/,/g, '.') + '<br>&nbsp;&nbsp;JavaScript: ✅<br>&nbsp;&nbsp;CSS: ✅<br>&nbsp;&nbsp;Connection: Encrypted<br><span class="blink">_</span>',
-        'whoami': '> USER: MAJOR TOM<br>&nbsp;&nbsp;Call: Jake<br>&nbsp;&nbsp;Role: Theatre Tech & Tinkerer<br>&nbsp;&nbsp;Web: jæk.com<br><span class="blink">_</span>',
-        'about': '> HERMES AGENT OS v1.0<br>&nbsp;&nbsp;Cassette-style command interface<br>&nbsp;&nbsp;Optimized for mobile/field ops<br>&nbsp;&nbsp;Designed by Ground Control<br><span class="blink">_</span>'
+        '/help': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Available GND CTRL commands:<br/>
+&nbsp;&nbsp;/help — Show all available commands<br/>
+&nbsp;&nbsp;/tasks — View active task queue<br/>
+&nbsp;&nbsp;/memory — Check memory status<br/>
+&nbsp;&nbsp;/cron — Review scheduled jobs<br/>
+&nbsp;&nbsp;/system — System diagnostics<br/>
+&nbsp;&nbsp;/status — Current operational status<br/>
+&nbsp;&nbsp;/deploy — Check deployment status<br/>
+&nbsp;&nbsp;/whoami — User identity info<br/>
+&nbsp;&nbsp;/about — Platform information`,
+
+        '/tasks': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Task queue: No active tasks queued.`,
+
+        '/memory': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Memory status:<br/>
+&nbsp;&nbsp;Usage: 55%<br/>
+&nbsp;&nbsp;Capacity: 1,375 chars<br/>
+&nbsp;&nbsp;Used: 760 chars<br/>
+&nbsp;&nbsp;Available: 615 chars`,
+
+        '/cron': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Scheduled jobs:<br/>
+&nbsp;&nbsp;No cron jobs configured.`,
+
+        '/system': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>System diagnostics:<br/>
+&nbsp;&nbsp;Platform: ${navigator.platform.replace(/,/g, '.')}<br/>
+&nbsp;&nbsp;JavaScript: ✅ Active<br/>
+&nbsp;&nbsp;Connection: Encrypted<br/>
+&nbsp;&nbsp;Uptime: ${Math.floor(performance.now() / 1000)}ms`,
+
+        '/status': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Operational status:<br/>
+&nbsp;&nbsp;Server: ONLINE<br/>
+&nbsp;&nbsp;API: CONNECTED<br/>
+&nbsp;&nbsp;Security: ENCRYPTED<br/>
+&nbsp;&nbsp;Mode: MISSION READY`,
+
+        '/deploy': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Deployment status:<br/>
+&nbsp;&nbsp;Branch: main<br/>
+&nbsp;&nbsp;Repository: HVRDWIRE/jake<br/>
+&nbsp;&nbsp;Panel Location: /GNDCTRL/<br/>
+&nbsp;&nbsp;Status: DEPLOYED`,
+
+        '/whoami': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>User identity:<br/>
+&nbsp;&nbsp;Call sign: MAJOR TOM<br/>
+&nbsp;&nbsp;Name: Jake<br/>
+&nbsp;&nbsp;Role: Theatre Technician & Tinkerer<br/>
+&nbsp;&nbsp;Web: jæk.com<br/>
+&nbsp;&nbsp;Ground Control: ONLINE`,
+
+        '/about': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Hermes Agent OS v1.0<br/>
+&nbsp;&nbsp;Cassette-style command interface<br/>
+&nbsp;&nbsp;Optimized for mobile/field ops<br/>
+&nbsp;&nbsp;Designed by Ground Control<br/>
+&nbsp;&nbsp;Mission: Deploy & Execute`,
+
+        '/clear': `<span class="timestamp">[${timeStr}]</span><span class="system">${cmd}</span>Clearing terminal display...`
     };
-    
-    terminal.innerHTML = responses[cmd] || '> UNKNOWN COMMAND: ' + cmd + '<br><span class="blink">_</span>';
+
+    if (responses[cmd]) {
+        responseDiv.innerHTML = responses[cmd];
+    } else if (text.trim()) {
+        responseDiv.innerHTML = `<span class="timestamp">[${timeStr}]</span><span class="command">&gt;</span><span class="${text.toLowerCase().includes('echo') ? 'system' : 'response'}">${escapeHtml(text)}</span>`;
+        if (!text.toLowerCase().startsWith('/')) {
+            responseDiv.innerHTML += `<br/><span class="timestamp">[${timeStr}]</span><span class="error">${cmd} not recognized. Type /help for available commands.</span>`;
+        }
+    } else {
+        responseDiv.innerHTML = `<span class="timestamp">[${timeStr}]</span><span class="system">Waiting for input...`;
+    }
+
+    // Append to terminal (maintain scroll position)
+    const terminal = document.getElementById('terminal');
+    terminal.insertBefore(responseDiv, terminal.firstChild);
 }
 
-function addToHistory(cmd) {
-    const entry = document.createElement('div');
-    entry.innerHTML = '[<time>' + new Date().toLocaleTimeString() + '</time>] > ' + cmd;
-    history.insertBefore(entry, history.firstChild);
-    if (history.children.length > 20) history.removeChild(history.lastChild);
+// Function to escape HTML in user input
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
-cmdInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') execute();
+// Send handler - works with Enter key or button click
+const sendBtn = document.getElementById('sendBtn');
+sendBtn.addEventListener('click', () => {
+    if (document.getElementById('cmd').value.trim()) {
+        handleCommand(document.getElementById('cmd').value);
+        document.getElementById('cmd').value = '';
+        document.getElementById('cmd').focus();
+    }
 });
 
+// Listen for Enter key specifically (like Telegram chat)
+const cmdInput = document.getElementById('cmd');
+cmdInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent form submission behavior
+        if (this.value.trim()) {
+            handleCommand(this.value);
+            this.value = '';
+            scrollToBottom();
+        }
+    }
+});
+
+// Quick command buttons
+function quickCmd(command) {
+    if (document.getElementById('cmd').value.trim() === '') {
+        handleCommand(command);
+    }
+}
+
+// Focus input on load
 document.addEventListener('DOMContentLoaded', () => { cmdInput.focus(); });
+
+// Scroll to bottom when new messages arrive
+function scrollToBottom() {
+    const terminal = document.getElementById('terminal');
+    if (terminal) {
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+}
+
 </script>
 </body>
 </html>
